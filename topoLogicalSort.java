@@ -37,3 +37,39 @@ class Solution {
         return ;
     }
 }
+
+
+// here is the solution 2 , that I solved using kahn's algorithm 
+
+class Solution2 {
+    public ArrayList<Integer> topoSort(int V, int[][] edges) {
+        // code here
+        int indegree[] = new int[V];
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i = 0 ; i<V ; i++)
+            adj.add(new ArrayList<Integer>());
+        for(int i = 0 ; i<edges.length ; i++){
+            adj.get(edges[i][0]).add(edges[i][1]);
+            indegree[edges[i][1]]++;
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0 ; i< V ; i++){
+            if(indegree[i]==0){
+                q.offer(i);
+            }
+        }
+        
+        while(!q.isEmpty()){
+            int n = q.poll();
+            ans.add(n);
+            for(int i : adj.get(n)){
+                indegree[i]--;
+                if(indegree[i]==0){
+                    q.offer(i);
+                }
+            }
+        }
+        return ans ;
+    }
+}
